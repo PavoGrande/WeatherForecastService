@@ -20,7 +20,6 @@ namespace WeatherForecast.Api.IntegrationTests
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false)
-                .AddJsonFile("appsettings.Development.json", false)
                 .Build();
             
             _openMeteoOptions = Options.Create(configuration.GetSection(nameof(OpenMeteoOptions))

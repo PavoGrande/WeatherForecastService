@@ -21,7 +21,6 @@ namespace WeatherForecast.Api.IntegrationTests
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false)
-                .AddJsonFile("appsettings.Development.json", false)
                 .AddJsonFile("appsettings.IntegrationTests.json", false)
                 .Build();
 
