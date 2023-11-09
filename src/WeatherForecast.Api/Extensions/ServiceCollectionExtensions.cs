@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Asp.Versioning;
 using Flurl.Http.Configuration;
 using Marten;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,13 @@ namespace WeatherForecast.Api.Extensions
         /// <param name="configuration"><see cref="IConfiguration"/>.</param>
         public static void AddServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddApiVersioning(opt =>
+            {
+                opt.DefaultApiVersion = new ApiVersion(1.0);
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.ApiVersionReader = new UrlSegmentApiVersionReader();
+            });
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             
@@ -45,9 +53,6 @@ namespace WeatherForecast.Api.Extensions
             services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
             services.AddScoped<IWeatherDataService, OpenMeteoDataService>();
             services.AddScoped<IWeatherForecastService, Services.WeatherForecastService>();
-
-            services.AddApiVersioning();
-            services.AddControllers();
         }
     }
 }

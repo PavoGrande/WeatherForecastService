@@ -1,3 +1,4 @@
+using Asp.Versioning.Conventions;
 using Microsoft.AspNetCore.Mvc;
 using WeatherForecast.Api.Contracts;
 using WeatherForecast.Api.Extensions;
@@ -9,32 +10,37 @@ builder.Services.AddServices(builder.Configuration);
 
 var app = builder.Build();
 
+var versionSet = app.NewApiVersionSet()
+    .HasApiVersion( 1.0 )
+    .ReportApiVersions()
+    .Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.MapPost("/coordinate", async ([FromBody]CoordinateModel coordinateModel, IWeatherForecastService weatherForecastService) => 
+app.MapPost("v{version:apiVersion}/coordinate", async ([FromBody]CoordinateModel coordinateModel, IWeatherForecastService weatherForecastService) => 
     await weatherForecastService.AddCoordinateAsync(coordinateModel.Latitude, coordinateModel.Longitude,
         new CancellationToken()))
-    .WithName("AddCoordinateAsync")
-    .WithOpenApi();
+    .WithApiVersionSet(versionSet)
+    .MapToApiVersion(1.0);
 
-app.MapGet("/forecast", async ([FromBody]CoordinateModel coordinateModel, IWeatherForecastService weatherForecastService) => 
+app.MapGet("v{version:apiVersion}/forecast", async ([FromBody]CoordinateModel coordinateModel, IWeatherForecastService weatherForecastService) => 
     await weatherForecastService.GetWeatherForecastAsync(coordinateModel.Latitude, coordinateModel.Longitude,
         new CancellationToken()))
-    .WithName("GetWeatherForecastAsync")
-    .WithOpenApi();
+    .WithApiVersionSet(versionSet)
+    .MapToApiVersion(1.0);
 
-app.MapGet("/coordinates", async (IWeatherForecastService weatherForecastService) => 
+app.MapGet("v{version:apiVersion}/coordinates", async (IWeatherForecastService weatherForecastService) => 
     await weatherForecastService.GetCoordinatesAsync(new CancellationToken()))
-    .WithName("GetCoordinatesAsync")
-    .WithOpenApi();
+    .WithApiVersionSet(versionSet)
+    .MapToApiVersion(1.0);
 
-app.MapDelete("/coordinate/{coordinateId}", async (int coordinateId, IWeatherForecastService weatherForecastService) => 
+app.MapDelete("v{version:apiVersion}/coordinate/{coordinateId}", async (int coordinateId, IWeatherForecastService weatherForecastService) => 
     await weatherForecastService.RemoveCoordinateAsync(coordinateId, new CancellationToken()))
-    .WithName("RemoveCoordinateAsync")
-    .WithOpenApi();
+    .WithApiVersionSet(versionSet)
+    .MapToApiVersion(1.0);
 
 app.Run();

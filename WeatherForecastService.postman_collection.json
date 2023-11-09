@@ -7,18 +7,19 @@
 	},
 	"item": [
 		{
-			"name": "https://localhost:5001/coordinates",
+			"name": "https://localhost:5001/v1/coordinates",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/coordinates",
+					"raw": "https://localhost:5001/v1/coordinates",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "5001",
 					"path": [
+						"v1",
 						"coordinates"
 					]
 				}
@@ -26,7 +27,7 @@
 			"response": []
 		},
 		{
-			"name": "https://localhost:5001/coordinate",
+			"name": "https://localhost:5001/v1/coordinate",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -40,13 +41,14 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/coordinate",
+					"raw": "https://localhost:5001/v1/coordinate",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "5001",
 					"path": [
+						"v1",
 						"coordinate"
 					]
 				}
@@ -68,15 +70,16 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/coordinate/5",
+					"raw": "https://localhost:5001/v1/coordinate/1",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "5001",
 					"path": [
+						"v1",
 						"coordinate",
-						"5"
+						"1"
 					]
 				}
 			},
@@ -100,13 +103,14 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/forecast",
+					"raw": "https://localhost:5001/v1/forecast",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "5001",
 					"path": [
+						"v1",
 						"forecast"
 					]
 				}
