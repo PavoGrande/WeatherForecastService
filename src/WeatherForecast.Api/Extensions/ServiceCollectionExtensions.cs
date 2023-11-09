@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using Flurl.Http.Configuration;
 using Marten;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using WeatherForecast.Api.Contracts;
 using WeatherForecast.Api.Services;
 using WeatherForecast.Api.Services.Options;
@@ -20,7 +19,6 @@ namespace WeatherForecast.Api.Extensions
         ///     Adds services to the services connection.
         /// </summary>
         /// <param name="services"><see cref="IServiceCollection"/>.</param>
-        /// <param name="hosting"><see cref="IHostEnvironment"/>.</param>
         /// <param name="configuration"><see cref="IConfiguration"/>.</param>
         public static void AddServices(this IServiceCollection services, IConfiguration configuration)
         {
@@ -38,12 +36,10 @@ namespace WeatherForecast.Api.Extensions
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
-            var storeOptions = new StoreOptions();
-            storeOptions.Connection(postgreSqlOptions.Value.ConnectionString);
-
-            services.AddMarten(opt => new StoreOptions().Connection(""));
-    
-            services.AddMarten(storeOptions).UseLightweightSessions();
+            services.AddMarten(opt =>
+            {
+                opt.Connection(postgreSqlOptions.Value.ConnectionString);
+            }).UseLightweightSessions();
 
             services.AddScoped<IDocumentDataAccess, MartenStorage>();
             services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
@@ -52,11 +48,6 @@ namespace WeatherForecast.Api.Extensions
 
             services.AddApiVersioning();
             services.AddControllers();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherForecastService.Runner", Version = "v1" });
-            });
         }
     }
 }

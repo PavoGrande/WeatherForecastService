@@ -23,12 +23,18 @@ app.MapPost("/coordinate", async ([FromBody]CoordinateModel coordinateModel, IWe
 
 app.MapGet("/forecast", async ([FromBody]CoordinateModel coordinateModel, IWeatherForecastService weatherForecastService) => 
     await weatherForecastService.GetWeatherForecastAsync(coordinateModel.Latitude, coordinateModel.Longitude,
-        new CancellationToken()));
+        new CancellationToken()))
+    .WithName("GetWeatherForecastAsync")
+    .WithOpenApi();
 
 app.MapGet("/coordinates", async (IWeatherForecastService weatherForecastService) => 
-    await weatherForecastService.GetCoordinatesAsync(new CancellationToken()));
+    await weatherForecastService.GetCoordinatesAsync(new CancellationToken()))
+    .WithName("GetCoordinatesAsync")
+    .WithOpenApi();
 
 app.MapDelete("/coordinate/{coordinateId}", async (int coordinateId, IWeatherForecastService weatherForecastService) => 
-    await weatherForecastService.RemoveCoordinateAsync(coordinateId, new CancellationToken()));
+    await weatherForecastService.RemoveCoordinateAsync(coordinateId, new CancellationToken()))
+    .WithName("RemoveCoordinateAsync")
+    .WithOpenApi();
 
 app.Run();

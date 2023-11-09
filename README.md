@@ -42,3 +42,7 @@ WeatherForecastService is a net7.0 Minimal REST API that supports the following 
 
 - Remember to `docker compose up -d` from the root of the repo before debugging the API in the IDE
 - Remember to `docker compose down -v` when finished to stop PostgreSQL container
+
+### Swagger API Refernce
+
+- https://localhost:5001/swagger/index.html
