@@ -1,4 +1,5 @@
 using Asp.Versioning.Conventions;
+using Flurl.Http;
 using Microsoft.AspNetCore.Mvc;
 using WeatherForecast.Api.Contracts;
 using WeatherForecast.Api.Extensions;
@@ -42,5 +43,24 @@ app.MapDelete("v{version:apiVersion}/coordinate/{coordinateId}", async (int coor
     await weatherForecastService.RemoveCoordinateAsync(coordinateId, new CancellationToken()))
     .WithApiVersionSet(versionSet)
     .MapToApiVersion(1.0);
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (FlurlHttpException ex)
+    {
+        context.Response.StatusCode = ex.StatusCode!.Value;
+        await context.Response.WriteAsync("Http error occurred.");
+    }
+    catch (DocumentDataAccessException ex)
+    {
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("Database error occurred.");
+    }
+});
+
 
 app.Run();

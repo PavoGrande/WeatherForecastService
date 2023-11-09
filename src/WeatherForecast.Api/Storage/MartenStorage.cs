@@ -1,6 +1,5 @@
 ﻿using Ardalis.GuardClauses;
 using Marten;
-using Marten.Exceptions;
 using WeatherForecast.Api.Contracts;
 
 namespace WeatherForecast.Api.Storage
@@ -12,6 +11,11 @@ namespace WeatherForecast.Api.Storage
     {
         private readonly IDocumentSession _documentSession;
         private readonly ILogger<IDocumentDataAccess> _logger;
+        
+        /// <summary>
+        ///     The message to return when an unhandled exception occurs.
+        /// </summary>
+        public const string UnHandledException = "An unhandled exception occurred.";
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MartenStorage" /> class.
@@ -40,7 +44,7 @@ namespace WeatherForecast.Api.Storage
             catch (Exception exception)
             {
                 _logger.LogError(exception.Message, exception);
-                throw GetDocumentDataAccessException(exception);
+                throw new DocumentDataAccessException(DocumentDataAccessConstants.UnHandledException, exception);
             }
         }
 
@@ -54,7 +58,7 @@ namespace WeatherForecast.Api.Storage
             catch (Exception exception)
             {
                 _logger.LogError(exception.Message, exception);
-                throw GetDocumentDataAccessException(exception);
+                throw new DocumentDataAccessException(DocumentDataAccessConstants.UnHandledException, exception);
             }
         }
 
@@ -70,7 +74,7 @@ namespace WeatherForecast.Api.Storage
             catch (Exception exception)
             {
                 _logger.LogError(exception.Message, exception);
-                throw GetDocumentDataAccessException(exception);
+                throw new DocumentDataAccessException(DocumentDataAccessConstants.UnHandledException, exception);
             }
         }
 
@@ -85,18 +89,8 @@ namespace WeatherForecast.Api.Storage
             catch (Exception exception)
             {
                 _logger.LogError(exception.Message, exception);
-                throw GetDocumentDataAccessException(exception);
+                throw new DocumentDataAccessException(DocumentDataAccessConstants.UnHandledException, exception);
             }
-        }
-
-        private static DocumentDataAccessException GetDocumentDataAccessException(Exception exception)
-        {
-            return exception switch
-            {
-                InvalidOperationException when exception.Message == "Id/id values cannot be null or empty" => new DocumentDataAccessException(DocumentDataAccessConstants.IdNotNullOrEmpty, exception),
-                DocumentAlreadyExistsException => new DocumentDataAccessException(DocumentDataAccessConstants.DocumentAlreadyExists, exception),
-                _ => new DocumentDataAccessException(DocumentDataAccessConstants.UnHandledException, exception)
-            };
         }
     }
 }

@@ -1,9 +1,7 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Marten;
-using Marten.Exceptions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Npgsql;
@@ -40,30 +38,6 @@ namespace WeatherForecast.Api.UnitTests
         }
 
         [Fact]
-        public async Task MartenStorage_AddDocumentAsync_ExpectDocumentDbException_DocumentAlreadyExistsMessage()
-        {
-            var coordinate = new Coordinate
-            {
-                Latitude = 55.255F,
-                Longitude = 88.788F
-            };
-
-            var cancellationToken = new CancellationToken();
-            var documentSessionMock = new Mock<IDocumentSession>(MockBehavior.Strict);
-
-            documentSessionMock.Setup(x => x.Insert(coordinate));
-            documentSessionMock.Setup(x => x.SaveChangesAsync(cancellationToken))
-                .ThrowsAsync(new DocumentAlreadyExistsException(new NpgsqlException(), typeof(Coordinate), coordinate.Id));
-
-            var martenStorage = new MartenStorage(documentSessionMock.Object, NullLogger<IDocumentDataAccess>.Instance);
-
-            var documentDbException = await Assert.ThrowsAsync<DocumentDataAccessException>(async () =>
-                await martenStorage.AddDocumentAsync(coordinate, cancellationToken));
-
-            documentDbException.Message.Should().Be(DocumentDataAccessConstants.DocumentAlreadyExists);
-        }
-
-        [Fact]
         public async Task MartenStorage_AddDocumentAsync_ExpectDocumentDbException_UnknownErrorMessage()
         {
             var coordinate = new Coordinate
@@ -85,30 +59,6 @@ namespace WeatherForecast.Api.UnitTests
                 await martenStorage.AddDocumentAsync(coordinate, cancellationToken));
 
             documentDbException.Message.Should().Be(DocumentDataAccessConstants.UnHandledException);
-        }
-
-        [Fact]
-        public async Task MartenStorage_AddDocumentAsync_ExpectDocumentDbException_IdNotNullOrEmpty()
-        {
-            var coordinate = new Coordinate
-            {
-                Latitude = 55.255F,
-                Longitude = 88.788F
-            };
-
-            var cancellationToken = new CancellationToken();
-            var documentSessionMock = new Mock<IDocumentSession>(MockBehavior.Strict);
-
-            documentSessionMock.Setup(x => x.Insert(coordinate));
-            documentSessionMock.Setup(x => x.SaveChangesAsync(cancellationToken))
-                .ThrowsAsync(new InvalidOperationException("Id/id values cannot be null or empty"));
-
-            var martenStorage = new MartenStorage(documentSessionMock.Object, NullLogger<IDocumentDataAccess>.Instance);
-
-            var documentDbException = await Assert.ThrowsAsync<DocumentDataAccessException>(async () =>
-                await martenStorage.AddDocumentAsync(coordinate, cancellationToken));
-
-            documentDbException.Message.Should().Be(DocumentDataAccessConstants.IdNotNullOrEmpty);
         }
 
         [Fact]
