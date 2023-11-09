@@ -27,11 +27,12 @@ namespace WeatherForecast.Api.IntegrationTests
             var dockerComposeOptions = Options.Create(configuration.GetSection(nameof(DockerComposeOptions))
                 .Get<DockerComposeOptions>());
 
+            var postgreSqlOptions = Options.Create(configuration.GetSection(nameof(PostgreSqlOptions))
+                .Get<PostgreSqlOptions>());
+
             var store = DocumentStore.For(options =>
             {
-                options.Connection(configuration.GetSection(PostgreSqlOptions.PostgreSql)[nameof(PostgreSqlOptions.ConnectionString)]);
-                options.Schema.For<Coordinate>().FullTextIndex();
-                options.AutoCreateSchemaObjects = AutoCreate.All;
+                options.Connection(postgreSqlOptions.Value.ConnectionString);
             });
 
             DocumentSession = store.LightweightSession();

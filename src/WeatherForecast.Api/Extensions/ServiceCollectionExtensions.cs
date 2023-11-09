@@ -1,9 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Flurl.Http.Configuration;
 using Marten;
-using Marten.Services;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using Weasel.Core;
 using WeatherForecast.Api.Contracts;
 using WeatherForecast.Api.Services;
 using WeatherForecast.Api.Services.Options;
@@ -29,12 +28,18 @@ namespace WeatherForecast.Api.Extensions
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
-            services.AddOptions<PostgreSqlOptions>().Bind(configuration.GetSection(PostgreSqlOptions.PostgreSql))
+            var postgreSqlOptions = Options.Create(configuration.GetSection(nameof(PostgreSqlOptions))
+                .Get<PostgreSqlOptions>());
+
+            services.AddOptions<PostgreSqlOptions>(postgreSqlOptions.Value.ConnectionString)
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
-            var storeOptions = BuildStoreOptions(hosting, configuration);
+            var storeOptions = new StoreOptions();
+            storeOptions.Connection(postgreSqlOptions.Value.ConnectionString);
 
+            services.AddMarten(opt => new StoreOptions().Connection(""));
+    
             services.AddMarten(storeOptions).UseLightweightSessions();
 
             services.AddScoped<IDocumentDataAccess, MartenStorage>();
@@ -49,30 +54,6 @@ namespace WeatherForecast.Api.Extensions
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherForecastService.Runner", Version = "v1" });
             });
-        }
-
-        private static StoreOptions BuildStoreOptions(IHostEnvironment hosting, IConfiguration configuration)
-        {
-            var options = new StoreOptions();
-
-            var serializer = new JsonNetSerializer
-            {
-                EnumStorage = EnumStorage.AsString
-            };
-
-            options.Connection(configuration.GetSection(PostgreSqlOptions.PostgreSql)[nameof(PostgreSqlOptions.ConnectionString)]);
-            options.Serializer(serializer);
-
-            if (hosting.IsDevelopment())
-            {
-                options.AutoCreateSchemaObjects = AutoCreate.All;
-            }
-            else if (hosting.IsProduction())
-            {
-                options.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
-            }
-
-            return options;
         }
     }
 }
