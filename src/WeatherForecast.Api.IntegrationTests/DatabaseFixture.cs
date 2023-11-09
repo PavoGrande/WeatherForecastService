@@ -6,9 +6,7 @@ using Ductus.FluentDocker.Services;
 using Marten;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Weasel.Core;
 using WeatherForecast.Api.Storage;
-using WeatherForecast.Api.Storage.Entities;
 
 namespace WeatherForecast.Api.IntegrationTests
 {

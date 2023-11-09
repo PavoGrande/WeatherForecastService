@@ -6,5 +6,7 @@
     public class OpenMeteoOptions
     {
         public string Uri { get; set; }
+
+        public string Options { get; set; }
     }
 }

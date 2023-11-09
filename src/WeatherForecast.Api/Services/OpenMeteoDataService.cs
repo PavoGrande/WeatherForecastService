@@ -12,6 +12,7 @@ namespace WeatherForecast.Api.Services
     /// </summary>
     public class OpenMeteoDataService : IWeatherDataService
     {
+        private readonly OpenMeteoOptions _openMetoOptions;
         private readonly IFlurlClient _flurlClient;
 
         /// <summary>
@@ -21,15 +22,14 @@ namespace WeatherForecast.Api.Services
         /// <param name="flurlClientFactory"><see cref="IFlurlClientFactory"/>FlurlClientFactory.</param>
         public OpenMeteoDataService(IOptions<OpenMeteoOptions> openMeteoOptions, IFlurlClientFactory flurlClientFactory)
         {
+            _openMetoOptions = openMeteoOptions.Value;
             _flurlClient = flurlClientFactory.Get(openMeteoOptions.Value.Uri);
         }
 
         /// <inheritdoc/>
         public async Task<WeatherForecastModel> GetForecast(float longitude, float latitude, CancellationToken cancellationToken)
         {
-            var weatherOptions = "?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m";
-
-            return await _flurlClient.Request(weatherOptions).GetJsonAsync<WeatherForecastModel>(cancellationToken);
+            return await _flurlClient.Request(_openMetoOptions.Options).GetJsonAsync<WeatherForecastModel>(cancellationToken);
         }
     }
 }

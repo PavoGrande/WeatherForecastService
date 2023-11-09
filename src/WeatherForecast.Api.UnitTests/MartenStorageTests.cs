@@ -112,7 +112,7 @@ namespace WeatherForecast.Api.UnitTests
         }
 
         [Fact]
-        public async Task MartenStorage_GetDocumentAsync_ExpectSuccessResponse()
+        public async Task MartenStorage_GetDocumentAsync_ExpectSuccess()
         {
             var coordinate = new Coordinate
             {
@@ -155,7 +155,7 @@ namespace WeatherForecast.Api.UnitTests
         }
 
         [Fact]
-        public async Task MartenStorage_DeleteDocumentAsync_ExpectSuccessResponse()
+        public async Task MartenStorage_DeleteDocumentAsync_ExpectSuccess()
         {
             var coordinate = new Coordinate
             {
