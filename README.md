@@ -4,8 +4,8 @@ WeatherForecastService is a net7.0 Minimal API that supports the following opera
 
 - Store longitude and latitude coordinates
 - Retreive a Weather Forecast for a given set of longitude and latitude coordinates
-- Listing previously stored longitude and latitude coordinates
-- Removing stored longitude and latitude coordinates
+- List previously stored longitude and latitude coordinates
+- Remove stored longitude and latitude coordinates
 
 # Getting Started
 
