@@ -12,11 +12,11 @@ using WeatherForecast.Api.Storage.Entities;
 
 namespace WeatherForecast.Api.IntegrationTests
 {
-    public class MartenFixture : IDisposable
+    public class DatabaseFixture : IDisposable
     {
         private readonly ICompositeService _dockerService;
 
-        public MartenFixture()
+        public DatabaseFixture()
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -36,12 +36,7 @@ namespace WeatherForecast.Api.IntegrationTests
 
             DocumentSession = store.LightweightSession();
 
-            _dockerService = StartPostgresCompose(dockerComposeOptions, DocumentSession);
-        }
-
-        private ICompositeService StartPostgresCompose(IOptions<DockerComposeOptions> dockerComposeOptions, IDocumentSession documentSession)
-        {
-            return new Builder()
+            _dockerService = new Builder()
                 .UseContainer()
                 .UseCompose()
                 .FromFile(Path.Join(Directory.GetCurrentDirectory(), dockerComposeOptions.Value.DockerComposePath))
@@ -51,7 +46,7 @@ namespace WeatherForecast.Api.IntegrationTests
                 {
                     try
                     {
-                        return documentSession.Connection is { State: ConnectionState.Open } ? 0 : 5000;
+                        return DocumentSession.Connection is { State: ConnectionState.Open } ? 0 : 5000;
                     }
                     catch (Exception)
                     {

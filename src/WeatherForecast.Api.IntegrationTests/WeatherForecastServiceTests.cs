@@ -15,15 +15,15 @@ using Xunit;
 
 namespace WeatherForecast.Api.IntegrationTests
 {
-    [Collection("MartenDb Collection")]
+    [Collection("DatabaseCollection")]
     public class WeatherForecastServiceTests
     {
-        private readonly MartenFixture _martenFixture;
+        private readonly DatabaseFixture _databaseFixture;
         private readonly IOptions<OpenMeteoOptions> _openMeteoOptions;
 
-        public WeatherForecastServiceTests(MartenFixture martenFixture)
+        public WeatherForecastServiceTests(DatabaseFixture databaseFixture)
         {
-            _martenFixture = martenFixture;
+            _databaseFixture = databaseFixture;
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -38,7 +38,7 @@ namespace WeatherForecast.Api.IntegrationTests
         public async Task AddForecast_SuccessCodeStatusResponse_ReturnData()
         {
             var openMeteoService = new OpenMeteoDataService(_openMeteoOptions, new PerBaseUrlFlurlClientFactory());
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
             var weatherForecastService = new Services.WeatherForecastService(openMeteoService, martenStorage);
 
             var weatherForecast = await weatherForecastService.AddCoordinateAsync(151.44F, 144.32F, new CancellationToken());
@@ -50,7 +50,7 @@ namespace WeatherForecast.Api.IntegrationTests
         public async Task GetForecast_SuccessCodeStatusResponse_ReturnData()
         {
             var openMeteoService = new OpenMeteoDataService(_openMeteoOptions, new PerBaseUrlFlurlClientFactory());
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
             var weatherForecastService = new Services.WeatherForecastService(openMeteoService, martenStorage);
 
             var weatherForecastModel = await weatherForecastService.GetWeatherForecastAsync(151.99F, 200.03F, new CancellationToken());
@@ -62,7 +62,7 @@ namespace WeatherForecast.Api.IntegrationTests
         public async Task GetForecastList_SuccessCodeStatusResponse_ReturnData()
         {
             var openMeteoService = new OpenMeteoDataService(_openMeteoOptions, new PerBaseUrlFlurlClientFactory());
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
             var weatherForecastService = new Services.WeatherForecastService(openMeteoService, martenStorage);
 
             var weatherForecast = await weatherForecastService.AddCoordinateAsync(100.55F, 122.14F, new CancellationToken());
@@ -78,7 +78,7 @@ namespace WeatherForecast.Api.IntegrationTests
         public async Task RemoveForecast_SuccessCodeStatusResponse_ReturnData()
         {
             var openMeteoService = new OpenMeteoDataService(_openMeteoOptions, new PerBaseUrlFlurlClientFactory());
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
             var weatherForecastService = new Services.WeatherForecastService(openMeteoService, martenStorage);
 
             var weatherForecast = await weatherForecastService.AddCoordinateAsync(88.26F, 91.05F, new CancellationToken());

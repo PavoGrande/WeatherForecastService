@@ -10,14 +10,14 @@ using Xunit;
 
 namespace WeatherForecast.Api.IntegrationTests
 {
-    [Collection("MartenDb Collection")]
+    [Collection("DatabaseCollection")]
     public class MartenStorageTests
     {
-        private readonly MartenFixture _martenFixture;
+        private readonly DatabaseFixture _databaseFixture;
 
-        public MartenStorageTests(MartenFixture martenFixture)
+        public MartenStorageTests(DatabaseFixture databaseFixture)
         {
-            _martenFixture = martenFixture;
+            _databaseFixture = databaseFixture;
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace WeatherForecast.Api.IntegrationTests
                 Longitude = 100.88F
             };
 
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
 
             await martenStorage.AddDocumentAsync(coordinate, new CancellationToken());
         }
@@ -43,7 +43,7 @@ namespace WeatherForecast.Api.IntegrationTests
                 Longitude = 100.88F
             };
 
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
 
             await martenStorage.AddDocumentAsync(coordinate, new CancellationToken());
 
@@ -61,7 +61,7 @@ namespace WeatherForecast.Api.IntegrationTests
                 Longitude = 100.88F
             };
 
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
 
             await martenStorage.AddDocumentAsync(coordinate, new CancellationToken());
 
@@ -81,7 +81,7 @@ namespace WeatherForecast.Api.IntegrationTests
                 Longitude = 100.88F
             };
 
-            var martenStorage = new MartenStorage(_martenFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
+            var martenStorage = new MartenStorage(_databaseFixture.DocumentSession, NullLogger<IDocumentDataAccess>.Instance);
 
             await martenStorage.AddDocumentAsync(coordinate, new CancellationToken());
 
