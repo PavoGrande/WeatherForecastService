@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "fc3bd78d-f98b-4df3-9aeb-65b5a1d15fb3",
+		"name": "WeatherForecastService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1058683"
+	},
+	"item": [
+		{
+			"name": "https://localhost:5001/coordinates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/coordinates",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"coordinates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:5001/coordinate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Latitude\": 999.11,\r\n    \"Longitude\": 200.23\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/coordinate",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"coordinate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:5001/coordinate/4",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/coordinate/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"coordinate",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": " http://localhost:5266/weatherforecastcontroller",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Latitude\": 999.11,\r\n    \"Longitude\": 200.23\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/forecast",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"forecast"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
