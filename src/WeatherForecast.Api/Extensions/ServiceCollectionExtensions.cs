@@ -22,8 +22,11 @@ namespace WeatherForecast.Api.Extensions
         /// <param name="services"><see cref="IServiceCollection"/>.</param>
         /// <param name="hosting"><see cref="IHostEnvironment"/>.</param>
         /// <param name="configuration"><see cref="IConfiguration"/>.</param>
-        public static void AddServices(this IServiceCollection services, IHostEnvironment hosting, IConfiguration configuration)
+        public static void AddServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+            
             services.AddOptions<OpenMeteoOptions>().Bind(configuration.GetSection(nameof(OpenMeteoOptions)))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
