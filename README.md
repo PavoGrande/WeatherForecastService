@@ -1,6 +1,6 @@
 # Introduction 
 
-WeatherForecastService is a net7.0 Minimal API that supports the following operations:
+WeatherForecastService is a net7.0 Minimal REST API that supports the following operations:
 
 - Store longitude and latitude coordinates
 - Retreive a Weather Forecast for a given set of longitude and latitude coordinates
