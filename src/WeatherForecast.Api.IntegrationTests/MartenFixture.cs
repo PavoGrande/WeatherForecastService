@@ -39,8 +39,8 @@ namespace WeatherForecast.Api.IntegrationTests
 
             _dockerService = StartPostgresCompose(dockerComposeOptions, DocumentSession);
         }
-        
-        internal ICompositeService StartPostgresCompose(IOptions<DockerComposeOptions> dockerComposeOptions, IDocumentSession documentSession)
+
+        private ICompositeService StartPostgresCompose(IOptions<DockerComposeOptions> dockerComposeOptions, IDocumentSession documentSession)
         {
             return new Builder()
                 .UseContainer()
